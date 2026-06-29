@@ -104,202 +104,14 @@ The user registers by:
 ### Core
 | Component | Technology |
 |---|---|
-| Language | Python 3.9+ |
-| Face Detection | OpenCV, `dlib`, `face_recognition` |
+| Language | Python 3.1+ |
+| Face Detection |  `dlib`, `face_recognition` |
 | Face Embedding | FaceNet / DeepFace |
 | Voice Recognition | `SpeechRecognition`, `pyaudio` |
 | Speaker Verification | Resemblyzer / MFCC features |
-| Database | SQLite (default) / PostgreSQL (production) |
+| Database | Supabase |
 
-### Interface
-| Component | Technology |
-|---|---|
-| Web Dashboard | Flask / Streamlit |
-| Frontend | HTML5, CSS3, JavaScript |
-| Charting | Chart.js / Matplotlib |
 
-### Optional / Cloud
-| Component | Technology |
-|---|---|
-| Cloud Sync | Firebase / AWS S3 |
-| Notifications | Twilio SMS / SMTP Email |
-| Containerization | Docker |
-
----
-
-## 📦 Installation
-
-### Prerequisites
-
-- Python 3.9 or higher
-- Webcam (USB or built-in)
-- Microphone
-- `cmake` installed (for `dlib`)
-
-### Clone the Repository
-
-```bash
-git clone https://github.com/your-username/biomark.git
-cd biomark
-```
-
-### Create Virtual Environment
-
-```bash
-python -m venv venv
-
-# Windows
-venv\Scripts\activate
-
-# macOS / Linux
-source venv/bin/activate
-```
-
-### Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-> ⚠️ If `dlib` fails to install, ensure `cmake` and `Visual Studio Build Tools` (Windows) or `build-essential` (Linux) are installed.
-
-### Configure Settings
-
-```bash
-cp config.example.yaml config.yaml
-# Edit config.yaml with your preferences
-```
-
----
-
-## 🚀 Quick Start
-
-### 1. Enroll a New User
-
-```bash
-python enroll.py --name "John Doe" --id "EMP001"
-```
-
-Follow on-screen prompts to capture face images and record voice passphrase.
-
-### 2. Start the Attendance System
-
-```bash
-python main.py
-```
-
-This launches the camera feed and microphone listener. Recognized users are marked present automatically.
-
-### 3. Launch the Dashboard
-
-```bash
-python dashboard.py
-# Open http://localhost:5000 in your browser
-```
-
----
-
-## 📁 Project Structure
-
-```
-biomark/
-│
-├── 📂 core/
-│   ├── face_detector.py      # Face detection & recognition logic
-│   ├── voice_verifier.py     # Voice authentication module
-│   ├── attendance_engine.py  # Attendance logging & validation
-│   └── biometric_validator.py# Dual-factor match coordinator
-│
-├── 📂 enrollment/
-│   ├── enroll.py             # New user enrollment script
-│   ├── face_capture.py       # Multi-angle face capture
-│   └── voice_recorder.py     # Passphrase recording & encoding
-│
-├── 📂 database/
-│   ├── db_manager.py         # Database operations
-│   ├── models.py             # User & attendance models
-│   └── biomark.db            # SQLite database (auto-created)
-│
-├── 📂 dashboard/
-│   ├── app.py                # Flask web server
-│   ├── templates/            # HTML templates
-│   └── static/               # CSS, JS, images
-│
-├── 📂 attendance_logs/       # Auto-generated CSV reports
-│   └── 2024-01-15.csv
-│
-├── 📂 encodings/             # Stored face + voice embeddings
-│
-├── 📂 tests/                 # Unit & integration tests
-│
-├── main.py                   # Main entry point
-├── config.yaml               # System configuration
-├── requirements.txt          # Python dependencies
-└── README.md
-```
-
----
-
-## 🖼️ Screenshots
-
-> *Add your actual screenshots here*
-
-| Enrollment Screen | Live Recognition | Attendance Dashboard |
-|:---:|:---:|:---:|
-| ![Enroll](docs/screenshots/enroll.png) | ![Recognition](docs/screenshots/recognition.png) | ![Dashboard](docs/screenshots/dashboard.png) |
-
----
-
-## 📊 Sample Attendance Log
-
-```csv
-Date,Time,ID,Name,Face Match,Voice Match,Status
-2024-01-15,09:03:21,EMP001,John Doe,98.7%,97.2%,Present
-2024-01-15,09:05:44,EMP002,Jane Smith,99.1%,95.8%,Present
-2024-01-15,09:12:01,EMP003,Ali Khan,76.3%,FAILED,Denied
-```
-
----
-
-## ⚙️ Configuration
-
-Edit `config.yaml` to customize behavior:
-
-```yaml
-# BioMark Configuration
-
-camera:
-  device_index: 0           # 0 = default webcam
-  resolution: [1280, 720]
-  fps: 30
-
-face_recognition:
-  model: "hog"              # "hog" (CPU) or "cnn" (GPU)
-  tolerance: 0.45           # Lower = stricter matching
-  min_face_size: 80
-
-voice_recognition:
-  passphrase: "My name is"  # Prompt shown to user
-  language: "en-IN"         # Language/accent code
-  similarity_threshold: 0.80
-
-attendance:
-  grace_period_minutes: 15  # Late mark threshold
-  export_format: "csv"      # "csv" or "xlsx"
-  auto_export: true
-
-database:
-  type: "sqlite"            # "sqlite" or "postgresql"
-  path: "database/biomark.db"
-
-notifications:
-  enabled: false
-  smtp_host: "smtp.gmail.com"
-  email_from: ""
-  email_to: ""
-```
-
----
 
 ## 🔒 Privacy & Security
 
@@ -314,36 +126,7 @@ notifications:
 
 ---
 
-## 🧪 Running Tests
 
-```bash
-# Run all tests
-pytest tests/
-
-# Run specific module
-pytest tests/test_face_detector.py -v
-
-# With coverage report
-pytest --cov=core tests/
-```
-
----
-
-## 🗺️ Roadmap
-
-- [x] Face detection & recognition
-- [x] Voice passphrase verification
-- [x] SQLite attendance logging
-- [x] CSV export
-- [ ] Web dashboard (in progress)
-- [ ] Mobile app (iOS / Android)
-- [ ] Multi-camera support
-- [ ] Cloud sync (Firebase)
-- [ ] Liveness detection (anti-spoofing)
-- [ ] Face mask detection support
-- [ ] REST API for third-party integration
-
----
 
 ## 🤝 Contributing
 
@@ -357,38 +140,12 @@ Contributions are welcome! Please follow these steps:
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting PRs.
 
----
 
-## 🐛 Known Issues & Troubleshooting
 
-| Issue | Solution |
-|---|---|
-| `dlib` install fails | Install `cmake` first: `pip install cmake` then retry |
-| Camera not detected | Check `device_index` in `config.yaml` |
-| Low face accuracy | Ensure good lighting; re-enroll with varied angles |
-| Voice not recognized | Check microphone permissions; adjust `similarity_threshold` |
-| Port 5000 in use | Change dashboard port in `config.yaml` |
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgements
-
-- [face_recognition](https://github.com/ageitgey/face_recognition) by Adam Geitgey
-- [OpenCV](https://opencv.org/) — Open Source Computer Vision Library
-- [Resemblyzer](https://github.com/resemble-ai/Resemblyzer) — Speaker verification
-- [SpeechRecognition](https://github.com/Uberi/speech_recognition) — Python speech library
-
----
 
 <div align="center">
 
-Made with ❤️ by the **BioMark Team**
+Made with ❤️ by the **Sonu kumar yadav**
 
 ⭐ Star this repo if BioMark helped you!
 
