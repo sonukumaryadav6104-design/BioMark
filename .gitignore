@@ -1,0 +1,16 @@
+
+.vscode
+
+.DS_5TORE
+.streamlit/ 
+# rename code for streamlit is mv .streamlit streamlit
+
+dist/
+.venv/
+venv/
+__pycache__/
+*.pyc
+node_modules
+
+package-lock.json
+package.json

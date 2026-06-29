@@ -1,0 +1,29 @@
+
+streamlit
+# Utilities
+numpy
+pandas
+
+# Face Recognition
+scikit-learn
+
+# Use for image processing and detect face
+dlib-bin
+
+# dlib-19.24.1-cp311-cp311-win_amd64.whl
+supabase
+bcrypt # hashing form
+
+segno # QR CODE
+pillow # for dealingg with image in python
+
+
+
+
+librosa # editing , modifying ,
+# resemblyzer # Embedding  banata hain
+webrtcvad-wheels
+
+git+https://github.com/ageitgey/face_recognition_models
+setuptools<70.0.0
+
