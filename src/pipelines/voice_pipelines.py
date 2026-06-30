@@ -1,8 +1,4 @@
-try:
-    from resemblyzer import VoiceEncoder, preprocess_wav
-    RESEMBLYZER_AVAILABLE = True
-except ImportError:
-    RESEMBLYZER_AVAILABLE = False
+from resemblyzer import VoiceEncoder, preprocess_wav
 
 import numpy as np
 import io
@@ -12,16 +8,13 @@ import streamlit as st
 
 @st.cache_resource
 def load_voice_encoder():
-    if not RESEMBLYZER_AVAILABLE:
-        return None
     return VoiceEncoder()
 
 
 def get_voice_embedding(audio_bytes):
-    if not RESEMBLYZER_AVAILABLE:
-        return None
     try:
         encoder = load_voice_encoder()
+
         audio, sr = librosa.load(io.BytesIO(audio_bytes), sr=16000)
         wav = preprocess_wav(audio)
         embedding = encoder.embed_utterance(wav)
@@ -35,28 +28,26 @@ def identify_speaker(new_embedding, candidates_dict, threshold=0.65):
     if new_embedding is None or not candidates_dict:
         return None, 0.0
 
-    new_embedding = np.array(new_embedding)  # fix: tolist() stored as list
     best_sid = None
     best_score = -1.0
 
     for sid, stored_embedding in candidates_dict.items():
         if stored_embedding:
-            similarity = float(np.dot(new_embedding, np.array(stored_embedding)))
+            similarity = np.dot(new_embedding, stored_embedding)
             if similarity > best_score:
                 best_score = similarity
                 best_sid = sid
 
     if best_score >= threshold:
-        return best_sid, round(best_score, 4)
+        return best_sid, best_score
 
-    return None, round(best_score, 4)
+    return None, best_score
 
 
 def process_bulk_audio(audio_bytes, candidates_dict, threshold=0.65):
-    if not RESEMBLYZER_AVAILABLE:
-        return {}
     try:
         encoder = load_voice_encoder()
+
         audio, sr = librosa.load(io.BytesIO(audio_bytes), sr=16000)
         segments = librosa.effects.split(audio, top_db=30)
 
@@ -68,16 +59,18 @@ def process_bulk_audio(audio_bytes, candidates_dict, threshold=0.65):
 
             segment_audio = audio[start:end]
             wav = preprocess_wav(segment_audio)
-            embedding = encoder.embed_utterance(wav).tolist()  # fix: consistent type
+            embedding = encoder.embed_utterance(wav)
 
             sid, score = identify_speaker(embedding, candidates_dict, threshold)
 
             if sid:
+                
                 if sid not in identified_result or score > identified_result[sid]:
                     identified_result[sid] = score
 
         return identified_result
 
     except Exception as e:
-        st.error(f'Bulk process error: {e}')
+       
+        st.error(f'Bulk Process Error: {e}')
         return {}
