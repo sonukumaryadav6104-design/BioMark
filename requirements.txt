@@ -17,7 +17,7 @@ bcrypt # hashing form
 segno # QR CODE
 pillow # for dealingg with image in python
 
-
+resemblyzer
 
 
 librosa # editing , modifying ,
