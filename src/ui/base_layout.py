@@ -3,9 +3,9 @@ import streamlit as st
 def style_base_layout():
     st.markdown("""
         <style>
-                # #MainMenu, footer, header {
-                #    visibility: hidden;
-                # }
+                #MainMenu, footer, header {
+                   visibility: hidden;
+                }
                 .block-container {
                     padding-top: 1.5rem !important;
                 }
