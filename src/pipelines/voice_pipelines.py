@@ -1,4 +1,10 @@
-from resemblyzer import VoiceEncoder, preprocess_wav
+try:
+    from resemblyzer import VoiceEncoder, preprocess_wav
+    RESEMBLYZER_AVAILABLE = True
+except Exception as e:
+    RESEMBLYZER_AVAILABLE = False
+    _IMPORT_ERROR = e
+
 
 import numpy as np
 import io
