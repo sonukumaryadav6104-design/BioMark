@@ -1,26 +1,30 @@
-try:
-    from resemblyzer import VoiceEncoder, preprocess_wav
-    RESEMBLYZER_AVAILABLE = True
-except Exception as e:
-    RESEMBLYZER_AVAILABLE = False
-    _IMPORT_ERROR = e
-
-
 import numpy as np
 import io
 import librosa
 import streamlit as st
 
+try:
+    from resemblyzer import VoiceEncoder, preprocess_wav
+    RESEMBLYZER_AVAILABLE = True
+    _IMPORT_ERROR = None
+except Exception as e:
+    RESEMBLYZER_AVAILABLE = False
+    _IMPORT_ERROR = e
+
 
 @st.cache_resource
 def load_voice_encoder():
+    if not RESEMBLYZER_AVAILABLE:
+        return None
     return VoiceEncoder()
 
 
 def get_voice_embedding(audio_bytes):
+    if not RESEMBLYZER_AVAILABLE:
+        st.error(f"Voice module unavailable: {_IMPORT_ERROR}")
+        return None
     try:
         encoder = load_voice_encoder()
-
         audio, sr = librosa.load(io.BytesIO(audio_bytes), sr=16000)
         wav = preprocess_wav(audio)
         embedding = encoder.embed_utterance(wav)
@@ -51,9 +55,11 @@ def identify_speaker(new_embedding, candidates_dict, threshold=0.65):
 
 
 def process_bulk_audio(audio_bytes, candidates_dict, threshold=0.65):
+    if not RESEMBLYZER_AVAILABLE:
+        st.error(f"Voice module unavailable: {_IMPORT_ERROR}")
+        return {}
     try:
         encoder = load_voice_encoder()
-
         audio, sr = librosa.load(io.BytesIO(audio_bytes), sr=16000)
         segments = librosa.effects.split(audio, top_db=30)
 
@@ -70,13 +76,11 @@ def process_bulk_audio(audio_bytes, candidates_dict, threshold=0.65):
             sid, score = identify_speaker(embedding, candidates_dict, threshold)
 
             if sid:
-                
                 if sid not in identified_result or score > identified_result[sid]:
                     identified_result[sid] = score
 
         return identified_result
 
     except Exception as e:
-       
         st.error(f'Bulk Process Error: {e}')
         return {}
