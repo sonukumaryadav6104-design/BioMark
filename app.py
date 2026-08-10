@@ -5,6 +5,7 @@ from src.screen.teacher_screen import teacher_screen
 from src.components.auto_enroll_dialog import auto_enroll_dialog
 
 st.set_page_config(layout="wide")
+
 def main():
     
     st.set_page_config(
@@ -19,7 +20,7 @@ def main():
         st.session_state['login_type'] = None
 
     join_code = st.query_params.get('join-code')
-
+    
     if join_code:
         if st.session_state.get('login_type') != 'student':
             st.session_state.login_type = 'student'
