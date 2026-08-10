@@ -5,7 +5,6 @@ from src.screen.teacher_screen import teacher_screen
 from src.components.auto_enroll_dialog import auto_enroll_dialog
 
 st.set_page_config(layout="wide")
-
 def main():
     
     st.set_page_config(
