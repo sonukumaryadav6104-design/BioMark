@@ -85,7 +85,7 @@ Contributions are welcome! Feel free to fork this repository, submit issues, and
 ---
 
 ## 👨‍💻 Team
-Built with ❤️ by **Sonu Kumar* .
+Built with ❤️ by **Sonu Kumar* 
 
 ---
 
